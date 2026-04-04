@@ -1,0 +1,13 @@
+.env
+.venv/
+env/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.cache/
+ms-playwright/
+browsers/
+*.log
+*.sqlite
+data/
