@@ -1,8 +1,9 @@
 import asyncio
 import json
 from datetime import datetime
-from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig, RateLimiter
+from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig, RateLimiter, CacheMode
 from crawl4ai.async_dispatcher import MemoryAdaptiveDispatcher
+from datetime import datetime, timezone
 
 # Mapping User Requirements to Config
 def get_user_run_config(requirements: dict):
@@ -16,7 +17,7 @@ def get_user_run_config(requirements: dict):
         scan_full_page=requirements.get("deep_scan", True),
         scroll_delay=0.8 if requirements.get("deep_scan") else 0,
         # Cache & Error Handling
-        bypass_cache=True,
+        cache_mode=CacheMode.BYPASS,
         stream=True
     )
 
@@ -63,7 +64,7 @@ async def automated_collector(urls: list[str], user_prefs: dict):
                 "summary": "Pending LLM processing...", 
                 "tech_score": 0,
                 "category": "Pending...",
-                "timestamp": datetime.utcnow().isoformat() + "Z"
+                "timestamp": datetime.now(timezone.utcoffset).isoformat()
             }
             results.append(data_packet)
 
@@ -72,7 +73,7 @@ async def automated_collector(urls: list[str], user_prefs: dict):
 # Example simulation of a User Request
 if __name__ == "__main__":
     user_urls = [
-        "https://www.example.com", 
+        "https://intellipaat.com/blog/how-to-determine-the-url-that-a-local-git-repository-was-originally-cloned-from/", 
         "https://invalid-url-test.xyz", # To test error handling
         "https://www.python.org/static/files/pubkeys.txt" # Non-HTML example
     ]
@@ -85,4 +86,7 @@ if __name__ == "__main__":
     }
 
     # Final logic would be:
-    # final_output = asyncio.run(automated_collector(user_urls, requirements))
+    print("🚀 AURA Collector starting...")
+    final_output = asyncio.run(automated_collector(user_urls, requirements))
+    print(json.dumps(final_output, indent=2))
+    print("\n✅ Scraping Complete.")
