@@ -11,3 +11,4 @@ browsers/
 *.log
 *.sqlite
 data/
+usage_log.json

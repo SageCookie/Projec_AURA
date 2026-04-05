@@ -1,9 +1,8 @@
 import asyncio
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig, RateLimiter, CacheMode
 from crawl4ai.async_dispatcher import MemoryAdaptiveDispatcher
-from datetime import datetime, timezone
 
 # Mapping User Requirements to Config
 def get_user_run_config(requirements: dict):
@@ -62,9 +61,9 @@ async def automated_collector(urls: list[str], user_prefs: dict):
                 "url": result.url,
                 "raw_content": result.markdown if result.success else error_info,
                 "summary": "Pending LLM processing...", 
-                "tech_score": 0,
+                "tech_score": 1,
                 "category": "Pending...",
-                "timestamp": datetime.now(timezone.utcoffset).isoformat()
+                "timestamp": datetime.now(timezone.utc).isoformat()
             }
             results.append(data_packet)
 
@@ -74,8 +73,6 @@ async def automated_collector(urls: list[str], user_prefs: dict):
 if __name__ == "__main__":
     user_urls = [
         "https://intellipaat.com/blog/how-to-determine-the-url-that-a-local-git-repository-was-originally-cloned-from/", 
-        "https://invalid-url-test.xyz", # To test error handling
-        "https://www.python.org/static/files/pubkeys.txt" # Non-HTML example
     ]
     
     # Requirements defined by the User in your future UI
