@@ -68,8 +68,8 @@ graph TD
     LLM --> FinalReport[Final Markdown Research Report]
     FinalReport --> User
     
-    ### **2. Research Sequence Diagram**
-    ```markdown
+   
+  
     ```mermaid
     sequenceDiagram
     participant U as User
